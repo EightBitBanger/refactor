@@ -38,8 +38,10 @@ int main(void) {
     
     while(1) {
         
+        // Get keyboard character
         char key = ConsoleGetChar();
         
+        // Check new input from the keyboard
         if (keyboard_char[0] == key) 
             continue;
         keyboard_char[0] = key;
@@ -47,12 +49,19 @@ int main(void) {
         // Return
         if (key == '\n') {
             
-            //ConsoleRunCommand();
-            //keyboard_string[0] = '\0';
-            //keyboard_string_length=0;
+            printLn();
             
-            //printLn();
-            //print(console_prompt);
+            ConsoleRunCommand();
+            
+            // Zero the keyboard string
+            keyboard_string[0] = '\0';
+            keyboard_string_length=0;
+            
+            print(console_prompt);
+            
+            // Testing - Print keyboard string
+            //print(keyboard_string);
+            
             continue;
         }
         
@@ -65,19 +74,12 @@ int main(void) {
         //if (keyboard_string_length > KEYBOARD_STRING_LENGTH_MAX - 2) 
         //    continue;
         
-        keyboard_string[keyboard_string_length]   = 'A';
+        keyboard_string[keyboard_string_length] = keyboard_char[0];
         keyboard_string_length++;
         
-        print(&keyboard_string[keyboard_string_length]);
-        keyboard_string[keyboard_string_length] = '\0';
+        print(&keyboard_string[keyboard_string_length-1]);
         
-        
-        
-        
-        printLn();
-        print(keyboard_string);
-        
-        
+        //keyboard_string[keyboard_string_length] = '\0';
         
     }
     
@@ -184,30 +186,25 @@ void ConsoleBackspace(void) {
 
 
 void ConsoleRunCommand(void) {
-    return;
+    
     const char* commandCLS = "cls";
     
     // Find function
+    //char* command = strstr(keyboard_string, commandCLS);
+    uint8_t passed = 1;
     for (uint8_t i=0; i < sizeof(commandCLS); i++) {
         if (commandCLS[i] == keyboard_string[i]) 
             continue;
         // Wrong function
+        passed = 0;
         return;
     }
     
-    
-    ConsoleClear(' ');
-    print(console_prompt);
-    
-    //char* command = strstr(keyboard_string, commandCLS);
-    
-    
-    
-    
-    
-    
-    
-    
+    // Check command name passed
+    if (passed == 1) {
+        ConsoleClear(' ');
+        print(console_prompt);
+    }
     
     return;
 }
